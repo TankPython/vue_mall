@@ -1,16 +1,15 @@
 <template>
-  <div>
     <el-container class="container">
       <el-header class="header">
         <el-row class="elrow">
-          <el-col :span="4">
+          <el-col :span="3">
             <div class="grid-content bg-purple">
               <img src="../../assets/static/aa.png" alt />
             </div>
           </el-col>
           <el-col :span="18" class="middle">
             <div>
-              <h2 class="wordh2">电商后台管理系统</h2>
+              <h2 class="wordh2">后台管理系统</h2>
             </div>
           </el-col>
           <el-col :span="2" class="loginout">
@@ -32,7 +31,7 @@
                 <span>用户管理</span>
               </template>
 
-              <el-menu-item index="31">
+              <el-menu-item index="/user">
                 <i class="el-icon-setting"></i>用户列表
               </el-menu-item>
             </el-submenu>
@@ -82,10 +81,11 @@
             </el-submenu>
           </el-menu>
         </el-aside>
-        <el-main class="main">Main</el-main>
+        <el-main class="main">
+          <router-view></router-view>
+        </el-main>
       </el-container>
     </el-container>
-  </div>
 </template>
 
 <script>
@@ -126,8 +126,6 @@ export default {
 }
 .main {
   background-color: #e9eef3;
-  height: 100%;
-  padding: 0%;
 }
 .loginout,
 .middle,
