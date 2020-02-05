@@ -22,7 +22,7 @@
       <el-container class="container2">
         <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
 
-          <el-menu default-active="2" class="menu" 
+          <el-menu default-active="2" class="menu"
           :router="true"
           :unique-opened="true">
             <el-submenu index="3">
@@ -90,21 +90,21 @@
 
 <script>
 export default {
-  created(){
+  created () {
     const token = sessionStorage.getItem('token')
-    if(!token){
+    if (!token) {
       this.$router.push({name: 'login'})
-      this.message.warning('请先登录')
+      this.$message.warning('请先登录')
     }
-  }, 
-  methods:{
-      loginout(){
-        sessionStorage.clear()
-           this.$router.push({name: 'login'})
-           this.$message.success('退出成功')
-      }
+  },
+  methods: {
+    loginout () {
+      sessionStorage.clear()
+      this.$router.push({name: 'login'})
+      this.$message.success('退出成功')
+    }
 
-}
+  }
 }
 </script>
 

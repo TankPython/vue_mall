@@ -13,7 +13,7 @@ Vue.use(http)
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 
-Vue.filter("dateFmt",function(value, fmtString){
+Vue.filter('dateFmt', function (value, fmtString) {
   return moment(value).format(fmtString)
 })
 

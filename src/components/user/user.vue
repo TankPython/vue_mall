@@ -108,74 +108,74 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       tableData: [],
       // dialogTableVisible: false,
       dialogFormAddVisible: false,
       dialogFormEditVisible: false,
       form: {},
-      searchValue: "",
+      searchValue: '',
       pagenum: 1,
       pagesize: 10,
       total: 1
-    };
+    }
   },
   methods: {
-    openAddDialog() {
+    openAddDialog () {
       // this.dialogTableVisible = true;
-      this.dialogFormAddVisible = true;
+      this.dialogFormAddVisible = true
     },
-    editAddDialog(id) {
-      console.log("edit id=", id);
+    editAddDialog (id) {
+      console.log('edit id=', id)
       // this.dialogTableVisible = true;
-      this.dialogFormEditVisible = true;
+      this.dialogFormEditVisible = true
     },
-    async loadUserlist() {
-      console.log("load---");
-      const token = sessionStorage.getItem("token");
-      this.$http.defaults.headers.common["Authorization"] = token;
+    async loadUserlist () {
+      console.log('load---')
+      const token = sessionStorage.getItem('token')
+      this.$http.defaults.headers.common['Authorization'] = token
       const res = await this.$http.get(
-        "users" +
+        'users' +
           `?query=${this.searchValue}&pagenum=${this.pagenum}&pagesize=${this.pagesize}`
-      );
+      )
       const {
         data: { users, total },
         meta: { msg, status }
-      } = res.data;
-      if (status == 200) {
-        this.tableData = users;
-        this.$message.success(msg);
-        this.total = total;
-        console.log("total=", total);
+      } = res.data
+      if (status === 200) {
+        this.tableData = users
+        this.$message.success(msg)
+        this.total = total
+        console.log('total=', total)
       } else {
-        this.$message.warning(msg);
+        this.$message.warning(msg)
       }
-      console.log("users=====", res.data);
+      console.log('users=====', res.data)
     },
-    async addUser() {
-      this.dialogFormAddVisible = false;
-      const token = sessionStorage.getItem("token");
-      this.$http.defaults.headers.common["Authorization"] = token;
-      const res = await this.$http.post("users", this.form);
-      this.form = {};
+    async addUser () {
+      this.dialogFormAddVisible = false
+      const token = sessionStorage.getItem('token')
+      this.$http.defaults.headers.common['Authorization'] = token
+      const res = await this.$http.post('users', this.form)
+      this.form = {}
       const {
         data: { users },
         meta: { msg, status }
-      } = res.data;
-      if (status == 200) {
-        this.tableData = users;
-        this.$message.success(msg);
+      } = res.data
+      if (status === 200) {
+        this.tableData = users
+        this.$message.success(msg)
       } else {
-        this.$message.warning(msg);
+        this.$message.warning(msg)
       }
-      this.loadUserlist();
+      this.loadUserlist()
     },
-    editUser() {
-      this.dialogFormEditVisible = false;
+    editUser () {
+      this.dialogFormEditVisible = false
     },
-    delUser(id){
-        this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
+    delUser (id) {
+      this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
@@ -201,26 +201,26 @@ export default {
         .catch(() => {
           this.$message({
             type: 'info',
-            message: msg
+            message: 'error'
           })
         })
     },
-    handleSizeChange(val) {
+    handleSizeChange (val) {
       this.pagenum = 1
-      this.pagesize = val;
-      this.loadUserlist();
-      console.log(`每页 ${val} 条`);
+      this.pagesize = val
+      this.loadUserlist()
+      console.log(`每页 ${val} 条`)
     },
-    handleCurrentChange(val) {
-      this.pagenum = val;
-      this.loadUserlist();
-      console.log(`当前页: ${val}`);
+    handleCurrentChange (val) {
+      this.pagenum = val
+      this.loadUserlist()
+      console.log(`当前页: ${val}`)
     }
   },
-  mounted() {
-    this.loadUserlist();
+  mounted () {
+    this.loadUserlist()
   }
-};
+}
 </script>
 
 <style>
