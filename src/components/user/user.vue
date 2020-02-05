@@ -1,10 +1,12 @@
 <template>
   <div>
-    <el-breadcrumb separator-class="el-icon-arrow-right">
+    <!-- <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>用户管理</el-breadcrumb-item>
       <el-breadcrumb-item>用户列表</el-breadcrumb-item>
-    </el-breadcrumb>
+    </el-breadcrumb> -->
+    <bread level1="用户管理" level2="用户列表"></bread>
+
     <div style="margin-top: 15px;">
       <el-input placeholder="请输入内容" v-model="searchValue" clearable>
         <el-button slot="append" icon="el-icon-search" @click="loadUserlist"></el-button>
@@ -149,194 +151,190 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       tableData: [],
       dialogFormAddVisible: false,
       dialogFormEditVisible: false,
       dialogFormSetVisible: false,
       form: {},
-      searchValue: "",
+      searchValue: '',
       pagenum: 1,
       pagesize: 10,
       total: 1,
-      username: "",
-      userid:"",
+      username: '',
+      userid: '',
       rid: -1,
-      roles: []
-    };
+      roles: [],
+      a: 9999
+    }
   },
   methods: {
     // 打开添加用户对话框
-    openAddDialog() {
-      this.form = {};
-      this.dialogFormAddVisible = true;
+    openAddDialog () {
+      this.form = {}
+      this.dialogFormAddVisible = true
     },
 
     // 编辑用户对话框
-    editDialog(user) {
-      console.log("edit user=", user);
-      this.form = user;
-      this.dialogFormEditVisible = true;
+    editDialog (user) {
+      console.log('edit user=', user)
+      this.form = user
+      this.dialogFormEditVisible = true
     },
 
     // 设置用户对话框
-    async SetDialog(user) {
-      this.username = user.username;
+    async SetDialog (user) {
+      this.username = user.username
       this.userid = user.id
-      const token = sessionStorage.getItem("token");
-      this.$http.defaults.headers.common["Authorization"] = token;
-      const res1 = await this.$http.get("roles/");
-      console.log("-----roles", res1.data);
+
+      const res1 = await this.$http.get('roles/')
+      console.log('-----roles', res1.data)
       if (res1.data.meta.status === 200) {
-        this.roles = res1.data.data;
-        const res2 = await this.$http.get("users/" + user.id);
-        const data = res2.data;
-        console.log("-----currentuser", data);
-        const msg = data.meta.msg;
-        this.dialogFormSetVisible = true;
+        this.roles = res1.data.data
+        const res2 = await this.$http.get('users/' + user.id)
+        const data = res2.data
+        console.log('-----currentuser', data)
+        const msg = data.meta.msg
+        this.dialogFormSetVisible = true
         if (data.meta.status === 200) {
-          this.rid = data.data.rid;
+          this.rid = data.data.rid
         }
       } else {
-        this.$message.warning(msg);
+        this.$message.warning(msg)
       }
     },
 
     // 加载用户列表
-    async loadUserlist() {
-      console.log("load---");
-      const token = sessionStorage.getItem("token");
-      this.$http.defaults.headers.common["Authorization"] = token;
+    async loadUserlist () {
+      console.log('load---')
+
       const res = await this.$http.get(
-        "users" +
+        'users' +
           `?query=${this.searchValue}&pagenum=${this.pagenum}&pagesize=${this.pagesize}`
-      );
+      )
       const {
         data: { users, total },
         meta: { msg, status }
-      } = res.data;
+      } = res.data
       if (status === 200) {
-        this.tableData = users;
-        this.$message.success(msg);
-        this.total = total;
-        console.log("total=", total);
+        this.tableData = users
+        this.$message.success(msg)
+        this.total = total
+        console.log('total=', total)
       } else {
-        this.$message.warning(msg);
+        this.$message.warning(msg)
       }
-      console.log("users=====", res.data);
+      console.log('users=====', res.data)
     },
 
     // 添加用户
-    async addUser() {
-      this.dialogFormAddVisible = false;
-      const token = sessionStorage.getItem("token");
-      this.$http.defaults.headers.common["Authorization"] = token;
-      const res = await this.$http.post("users", this.form);
-      this.form = {};
+    async addUser () {
+      this.dialogFormAddVisible = false
+
+      const res = await this.$http.post('users', this.form)
+      this.form = {}
       const {
         data: { users },
         meta: { msg, status }
-      } = res.data;
+      } = res.data
       if (status === 200) {
-        this.tableData = users;
-        this.$message.success(msg);
+        this.tableData = users
+        this.$message.success(msg)
       } else {
-        this.$message.warning(msg);
+        this.$message.warning(msg)
       }
-      this.loadUserlist();
+      this.loadUserlist()
     },
 
     // 编辑用户
-    async editUser() {
-      this.dialogFormEditVisible = false;
-      const token = sessionStorage.getItem("token");
-      this.$http.defaults.headers.common["Authorization"] = token;
-      const res = await this.$http.put("users/" + this.form.id, this.form);
+    async editUser () {
+      this.dialogFormEditVisible = false
+
+      const res = await this.$http.put('users/' + this.form.id, this.form)
       const {
         data: { users },
         meta: { msg, status }
-      } = res.data;
+      } = res.data
       if (status === 200) {
-        this.$message.success(msg);
+        this.$message.success(msg)
       } else {
-        this.$message.warning(msg);
+        this.$message.warning(msg)
       }
-      this.form = {};
-      this.loadUserlist();
+      this.form = {}
+      this.loadUserlist()
     },
 
     // 设置用户角色
-    async setUser() {
-      this.dialogFormSetVisible = false;
-      const token = sessionStorage.getItem("token");
-      this.$http.defaults.headers.common["Authorization"] = token;
-      const res = await this.$http.put("users/" + this.userid+"/role", {"rid":this.rid});
+    async setUser () {
+      this.dialogFormSetVisible = false
+
+      const res = await this.$http.put('users/' + this.userid + '/role', {'rid': this.rid})
       const {
         data: {},
         meta: { msg, status }
-      } = res.data;
+      } = res.data
       if (status === 200) {
-        this.$message.success(msg);
+        this.$message.success(msg)
       } else {
-        this.$message.warning(msg);
+        this.$message.warning(msg)
       }
-      this.form = {};
-      this.loadUserlist();
+      this.form = {}
+      this.loadUserlist()
     },
 
     // 删除用户
-    delUser(id) {
-      this.$confirm("此操作将永久删除该用户, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
+    delUser (id) {
+      this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
         center: true
       })
         .then(async () => {
-          const res = await this.$http.delete(`users/${id}`);
-          const data = res.data;
+          const res = await this.$http.delete(`users/${id}`)
+          const data = res.data
           // console.log(data)
           const {
             meta: { status, msg }
-          } = data;
+          } = data
 
           if (status === 200) {
             // 删除成功 重新加载数据
-            this.pagenum = 1;
-            this.loadUserlist();
+            this.pagenum = 1
+            this.loadUserlist()
           } else {
             this.$message({
-              type: "success",
+              type: 'success',
               message: msg
-            });
+            })
           }
         })
         .catch(() => {
           this.$message({
-            type: "info",
-            message: "error"
-          });
-        });
+            type: 'info',
+            message: 'error'
+          })
+        })
     },
 
     // 页码尺寸改变
-    handleSizeChange(val) {
-      this.pagenum = 1;
-      this.pagesize = val;
-      this.loadUserlist();
+    handleSizeChange (val) {
+      this.pagenum = 1
+      this.pagesize = val
+      this.loadUserlist()
       // console.log(`每页 ${val} 条`)
     },
-    handleCurrentChange(val) {
-      this.pagenum = val;
-      this.loadUserlist();
+    handleCurrentChange (val) {
+      this.pagenum = val
+      this.loadUserlist()
       // console.log(`当前页: ${val}`)
     }
   },
-  mounted() {
-    this.loadUserlist();
+  mounted () {
+    this.loadUserlist()
   }
-};
+}
 </script>
 
 <style>
