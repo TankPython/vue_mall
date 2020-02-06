@@ -50,12 +50,12 @@ export default {
     }
   },
   created () {
-    const token = sessionStorage.getItem('token')
-    if (!token) {
-      this.$router.push({ name: 'login' })
-      this.$message.warning('请先登录')
-      return
-    }
+    // const token = sessionStorage.getItem('token')
+    // if (!token) {
+    //   this.$router.push({ name: 'login' })
+    //   this.$message.warning('请先登录')
+    //   return
+    // }
     this.getMenus()
   },
   methods: {
