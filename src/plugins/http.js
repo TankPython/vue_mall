@@ -7,7 +7,7 @@ httpHelper.install = function fn (Vue) {
     // 在发送请求之前做些什么
     console.log(config, '-----config')
     console.log(config.url, '===-----url=')
-    if (config.url != 'login') {
+    if (config.url !== 'login') {
       const token = sessionStorage.getItem('token')
       config.headers.common['Authorization'] = token
     }

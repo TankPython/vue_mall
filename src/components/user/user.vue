@@ -187,7 +187,6 @@ export default {
     async SetDialog (user) {
       this.username = user.username
       this.userid = user.id
-
       const res1 = await this.$http.get('roles/')
       console.log('-----roles', res1.data)
       if (res1.data.meta.status === 200) {
@@ -199,9 +198,10 @@ export default {
         this.dialogFormSetVisible = true
         if (data.meta.status === 200) {
           this.rid = data.data.rid
+          this.$message.success(msg)
         }
       } else {
-        this.$message.warning(msg)
+        this.$message.warning(res1.data.meta.msg)
       }
     },
 
@@ -253,7 +253,6 @@ export default {
 
       const res = await this.$http.put('users/' + this.form.id, this.form)
       const {
-        data: { users },
         meta: { msg, status }
       } = res.data
       if (status === 200) {
@@ -271,7 +270,6 @@ export default {
 
       const res = await this.$http.put('users/' + this.userid + '/role', {'rid': this.rid})
       const {
-        data: {},
         meta: { msg, status }
       } = res.data
       if (status === 200) {

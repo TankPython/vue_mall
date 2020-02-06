@@ -5,17 +5,18 @@ import Home from '@/components/home/home.vue'
 import User from '@/components/User/user.vue'
 import Rights from '@/components/rights/rights.vue'
 import Roles from '@/components/rights/roles.vue'
+import { Message } from 'element-ui'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [{
     name: 'home',
     path: '/',
     component: Home,
     children: [{
       name: 'user',
-      path: '/user',
+      path: '/users',
       component: User
     }, {
       name: 'rights',
@@ -35,3 +36,19 @@ export default new Router({
 
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  console.log(to.path, '---hahaha-------------************-', from.path)
+  if (to.path !== '/login') {
+    console.log('-----------99999')
+    const token = sessionStorage.getItem('token')
+    if (!token) {
+      router.push({ name: 'login' })
+      Message.warning('请先登录')
+      return
+    }
+  }
+  next()
+})
+
+export default router

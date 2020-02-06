@@ -8,9 +8,9 @@
 
       <el-table-column prop="level" label="权限等级">
         <template slot-scope="dataTable">
-          <el-tag v-if="dataTable.row.level=='1'">一级</el-tag>
-          <el-tag type="success" v-if="dataTable.row.level=='2'">二级</el-tag>
-          <el-tag type="danger" v-if="dataTable.row.level=='3'">三级</el-tag>
+          <el-tag v-if="dataTable.row.level=='0'">一级</el-tag>
+          <el-tag type="success" v-if="dataTable.row.level=='1'">二级</el-tag>
+          <el-tag type="danger" v-if="dataTable.row.level=='2'">三级</el-tag>
         </template>
       </el-table-column>
     </el-table>
@@ -41,7 +41,6 @@ export default {
       }
       console.log('rights=====', res.data)
     }
-
   },
   mounted () {
     this.loadRightslist()
